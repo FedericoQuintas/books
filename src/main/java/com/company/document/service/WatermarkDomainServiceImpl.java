@@ -3,17 +3,21 @@ package com.company.document.service;
 import com.company.document.domain.Watermark;
 import com.company.document.domain.WatermarkFactory;
 import com.company.document.domain.WatermarkResponseFactory;
+import com.company.document.persistence.DocumentRepository;
 import com.company.document.response.WatermarkResponse;
 
-public class WatermarkServiceImpl implements WatermarkService {
+public class WatermarkDomainServiceImpl implements WatermarkDomainService {
 
 	private WatermarkResponseFactory watermarkResponseFactory;
 	private WatermarkFactory watermarkFactory;
+	private DocumentRepository documentRepository;
 
-	public WatermarkServiceImpl(WatermarkFactory watermarkFactory,
-			WatermarkResponseFactory watermarkResponseFactory) {
+	public WatermarkDomainServiceImpl(WatermarkFactory watermarkFactory,
+			WatermarkResponseFactory watermarkResponseFactory,
+			DocumentRepository documentRepository) {
 		this.watermarkFactory = watermarkFactory;
 		this.watermarkResponseFactory = watermarkResponseFactory;
+		this.documentRepository = documentRepository;
 	}
 
 	@Override
@@ -22,10 +26,15 @@ public class WatermarkServiceImpl implements WatermarkService {
 
 		Watermark watermark = watermarkFactory.create(title, content,
 				authorName, topic);
+		
+		documentRepository.save(documentId, watermark);
 
-		Long ticket = documentId;
+		return watermarkResponseFactory.create(watermark, documentId);
+	}
 
-		return watermarkResponseFactory.create(watermark, ticket);
+	@Override
+	public Watermark getWatermark(Long ticket) {
+		return documentRepository.getWatermark(ticket);
 	}
 
 }

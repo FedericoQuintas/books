@@ -4,6 +4,7 @@ import com.company.document.domain.Document;
 import com.company.document.domain.DocumentBuilder;
 import com.company.document.domain.DocumentResponseFactory;
 import com.company.document.domain.DocumentType;
+import com.company.document.domain.Watermark;
 import com.company.document.persistence.DocumentRepository;
 import com.company.document.response.DocumentResponse;
 import com.company.document.response.WatermarkResponse;
@@ -12,12 +13,12 @@ import com.company.user.service.FindAuthorService;
 public class DocumentServiceImpl implements DocumentService {
 
 	private DocumentRepository documentRepository;
-	private WatermarkService watermarkService;
+	private WatermarkDomainService watermarkService;
 	private FindAuthorService findAuthorService;
 	private DocumentResponseFactory documentResponseFactory;
 
 	public DocumentServiceImpl(DocumentRepository documentRepository,
-			WatermarkService watermarkService,
+			WatermarkDomainService watermarkService,
 			FindAuthorService findAuthorService,
 			DocumentResponseFactory documentResponseFactory) {
 		this.documentRepository = documentRepository;
@@ -65,4 +66,14 @@ public class DocumentServiceImpl implements DocumentService {
 		}
 	}
 
+	@Override
+	public Document checkWatermarkStatus(Long ticket) {
+		Watermark watermark = watermarkService.getWatermark(ticket);
+		Document document = documentRepository.getById(ticket);
+		document.setWatermark(watermark);
+		documentRepository.save(document);
+		return document;
+	}
+
 }
+

@@ -7,6 +7,11 @@ import org.junit.Test;
 import com.company.document.domain.Watermark;
 import com.company.document.domain.WatermarkFactory;
 import com.company.document.domain.WatermarkResponseFactory;
+import com.company.document.persistence.DocumentRepository;
+
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+
 
 public class WatermarkServiceTest {
 
@@ -15,14 +20,17 @@ public class WatermarkServiceTest {
 	private String authorName = "Name";
 	private String topic = "topic";
 	private Long id = 1l;
-	private WatermarkServiceImpl watermarkService;
+	private WatermarkDomainServiceImpl watermarkService;
+	private DocumentRepository documentRepository;
 
 	@Before
-	public void before(){
-		watermarkService = new WatermarkServiceImpl(new WatermarkFactory(),
-				new WatermarkResponseFactory());
+	public void before() {
+		documentRepository = mock(DocumentRepository.class);
+		watermarkService = new WatermarkDomainServiceImpl(
+				new WatermarkFactory(), new WatermarkResponseFactory(),
+				documentRepository);
 	}
-	
+
 	@Test
 	public void whenWatermarkIsCreatedThenHasTitle() {
 		Watermark watermark = watermarkService.create(id, title, content,
@@ -56,5 +64,12 @@ public class WatermarkServiceTest {
 		Watermark watermark = watermarkService.create(id, title, content,
 				authorName, null).getWatermark();
 		Assert.assertNull(watermark.getTopic());
+	}
+	
+	@Test
+	public void whenWatermarkIsCreatedThenIsSaved() {
+		Watermark watermark = watermarkService.create(id, title, content,
+				authorName, null).getWatermark();
+		verify(documentRepository).save(id, watermark);
 	}
 }
