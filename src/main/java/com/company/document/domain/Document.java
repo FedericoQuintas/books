@@ -30,4 +30,9 @@ public class Document {
 		return this.id;
 	}
 
+	public void setWatermark(Watermark watermark) {
+		this.watermark = watermark;
+		
+	}
+
 }
