@@ -7,6 +7,11 @@ public class WatermarkResponse {
 	private Long ticket;
 	private Watermark watermark;
 
+	public WatermarkResponse(Watermark watermark, Long ticket) {
+		this.watermark = watermark;
+		this.ticket = ticket;
+	}
+
 	public Long getTicket() {
 		return this.ticket;
 	}

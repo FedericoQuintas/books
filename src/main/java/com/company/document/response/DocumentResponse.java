@@ -16,4 +16,8 @@ public class DocumentResponse {
 		return this.document;
 	}
 
+	public Long getTicket() {
+		return this.ticket;
+	}
+
 }

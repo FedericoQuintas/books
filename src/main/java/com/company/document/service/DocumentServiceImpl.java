@@ -14,13 +14,16 @@ public class DocumentServiceImpl implements DocumentService {
 	private DocumentRepository documentRepository;
 	private WatermarkService watermarkService;
 	private FindAuthorService findAuthorService;
+	private DocumentResponseFactory documentResponseFactory;
 
 	public DocumentServiceImpl(DocumentRepository documentRepository,
 			WatermarkService watermarkService,
-			FindAuthorService findAuthorService) {
+			FindAuthorService findAuthorService,
+			DocumentResponseFactory documentResponseFactory) {
 		this.documentRepository = documentRepository;
 		this.watermarkService = watermarkService;
 		this.findAuthorService = findAuthorService;
+		this.documentResponseFactory = documentResponseFactory;
 	}
 
 	@Override
@@ -31,15 +34,17 @@ public class DocumentServiceImpl implements DocumentService {
 
 		String authorName = findAuthorService.getAuthorName(authorId);
 
-		WatermarkResponse watermarkResponse = watermarkService.create(title,
-				DocumentType.valueOf(type.toUpperCase()).getName(), authorName, topic);
+		WatermarkResponse watermarkResponse = watermarkService.create(
+				document.getId(), title,
+				DocumentType.valueOf(type.toUpperCase()).getName(), authorName,
+				topic);
 
 		fillDocumentWithWatermark(document, watermarkResponse);
 
-		return new DocumentResponseFactory().create(document,
+		return documentResponseFactory.create(document,
 				watermarkResponse.getTicket());
 	}
-	
+
 	public DocumentResponse create(String title, Long authorId, String type) {
 		return create(title, authorId, null, type);
 	}

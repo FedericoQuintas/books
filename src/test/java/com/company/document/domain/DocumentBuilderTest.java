@@ -60,39 +60,33 @@ public class DocumentBuilderTest {
 	
 	@Test
 	public void whenADocumentIsCreatedWithNoIdThenExceptionIsThrown() {
-
 		try {
 			new DocumentBuilder().withAuthorId(authorId).withTitle(title).build();
 			fail();
 		} catch (InvalidDocumentCreationException e) {
 			Assert.assertEquals("Invalid document creation", e.getMessage());
 		}
-
 	}
 
 
 	@Test
 	public void whenADocumentIsCreatedWithNoTitleThenExceptionIsThrown() {
-
 		try {
 			new DocumentBuilder().withAuthorId(authorId).build();
 			fail();
 		} catch (InvalidDocumentCreationException e) {
 			Assert.assertEquals("Invalid document creation", e.getMessage());
 		}
-
 	}
 	
 	@Test
 	public void whenADocumentIsCreatedWithNoUserIdThenExceptionIsThrown() {
-
 		try {
 			new DocumentBuilder().withTitle(title).build();
 			fail();
 		} catch (InvalidDocumentCreationException e) {
 			Assert.assertEquals("Invalid document creation", e.getMessage());
 		}
-
 	}
 	
 	@Test

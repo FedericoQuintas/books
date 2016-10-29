@@ -1,10 +1,16 @@
 package com.company.document.service;
 
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.company.document.domain.Document;
+import com.company.document.domain.DocumentResponseFactory;
 import com.company.document.domain.DocumentType;
 import com.company.document.domain.Watermark;
 import com.company.document.persistence.DocumentRepository;
@@ -12,20 +18,15 @@ import com.company.document.repository.DocumentInMemoryRepository;
 import com.company.document.response.WatermarkResponse;
 import com.company.user.service.FindAuthorService;
 
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.any;
-
 public class DocumentServiceTest {
 
 	private String title = "Title";
 	private Long id = 100L;
 	private Long authorId = 1L;
+	private String topic = "topic";
 	private DocumentService documentService;
 	private DocumentRepository documentRepository;
 	private WatermarkService watermarkService;
-	private String topic = "topic";
 	private FindAuthorService findAuthorService;
 
 	@Before
@@ -35,17 +36,14 @@ public class DocumentServiceTest {
 		watermarkService = mock(WatermarkService.class);
 		WatermarkResponse waterMarkResponse = mock(WatermarkResponse.class);
 		when(
-				watermarkService.create(any(String.class), any(String.class),
-						any(String.class))).thenReturn(waterMarkResponse);
-		when(
-				watermarkService.create(any(String.class), any(String.class),
+				watermarkService.create(any(Long.class), any(String.class), any(String.class),
 						any(String.class), any(String.class))).thenReturn(
 				waterMarkResponse);
 		findAuthorService = mock(FindAuthorService.class);
 		when(findAuthorService.getAuthorName(authorId)).thenReturn(
 				"Author name");
 		documentService = new DocumentServiceImpl(documentRepository,
-				watermarkService, findAuthorService);
+				watermarkService, findAuthorService, new DocumentResponseFactory());
 	}
 
 	@Test
@@ -108,13 +106,13 @@ public class DocumentServiceTest {
 	public void whenBookIsCreatedThenWatermarkServiceIsCalled() {
 		documentService.create(title, authorId, topic,
 				DocumentType.BOOK.getName());
-		verify(watermarkService).create(title, "book", "Author name", topic);
+		verify(watermarkService).create(id, title, "book", "Author name", topic);
 	}
 
 	@Test
 	public void whenJournalIsCreatedThenWatermarkServiceIsCalled() {
 		documentService.create(title, authorId, DocumentType.JOURNAL.getName());
-		verify(watermarkService).create(title, DocumentType.JOURNAL.getName(),
+		verify(watermarkService).create(id, title, DocumentType.JOURNAL.getName(),
 				"Author name", null);
 	}
 
@@ -128,7 +126,7 @@ public class DocumentServiceTest {
 		when(watermarkResponse.getWatermark()).thenReturn(watermark);
 
 		when(
-				watermarkService.create(any(String.class), any(String.class),
+				watermarkService.create(any(Long.class), any(String.class), any(String.class),
 						any(String.class), any(String.class))).thenReturn(
 				watermarkResponse);
 
@@ -149,7 +147,7 @@ public class DocumentServiceTest {
 		when(waterMarkResponse.getWatermark()).thenReturn(watermark);
 
 		when(
-				watermarkService.create(any(String.class), any(String.class),
+				watermarkService.create(any(Long.class), any(String.class), any(String.class),
 						any(String.class), any(String.class))).thenReturn(
 				waterMarkResponse);
 
@@ -166,7 +164,7 @@ public class DocumentServiceTest {
 		WatermarkResponse waterMarkResponse = mock(WatermarkResponse.class);
 
 		when(
-				watermarkService.create(any(String.class), any(String.class),
+				watermarkService.create(any(Long.class), any(String.class), any(String.class),
 						any(String.class), any(String.class))).thenReturn(
 				waterMarkResponse);
 
@@ -183,7 +181,7 @@ public class DocumentServiceTest {
 		WatermarkResponse waterMarkResponse = mock(WatermarkResponse.class);
 
 		when(
-				watermarkService.create(any(String.class), any(String.class),
+				watermarkService.create(any(Long.class), any(String.class), any(String.class),
 						any(String.class), any(String.class))).thenReturn(
 				waterMarkResponse);
 
