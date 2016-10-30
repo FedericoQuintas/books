@@ -7,7 +7,7 @@ public interface DocumentService {
 
 	DocumentResponse create(String title, Long authorId, String topic, String type);
 
-	DocumentResponse create(String title, Long authorId, String string);
+	DocumentResponse create(String title, Long authorId, String type);
 
 	Document checkWatermarkStatus(Long ticket);
 

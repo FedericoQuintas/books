@@ -26,7 +26,7 @@ public class WatermarkDomainServiceImpl implements WatermarkDomainService {
 
 		Watermark watermark = watermarkFactory.create(title, content,
 				authorName, topic);
-		
+
 		documentRepository.save(documentId, watermark);
 
 		return watermarkResponseFactory.create(watermark, documentId);

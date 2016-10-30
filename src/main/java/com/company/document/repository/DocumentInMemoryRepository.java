@@ -14,9 +14,9 @@ public class DocumentInMemoryRepository implements DocumentRepository {
 	private Long nextId;
 	private Map<Long, Document> documents;
 	private Map<Long, Watermark> watermarks;
-	
-	public DocumentInMemoryRepository(){
-		this.nextId = 0L;
+
+	public DocumentInMemoryRepository() {
+		this.nextId = 1L;
 		this.documents = new HashMap<Long, Document>();
 		this.watermarks = new HashMap<Long, Watermark>();
 	}
@@ -33,7 +33,7 @@ public class DocumentInMemoryRepository implements DocumentRepository {
 
 	@Override
 	public Watermark getWatermark(Long ticket) {
-		if(!this.watermarks.containsKey(ticket)){
+		if (!this.watermarks.containsKey(ticket)) {
 			throw new WatermarkNotFoundException();
 		}
 		return this.watermarks.get(ticket);
@@ -41,7 +41,7 @@ public class DocumentInMemoryRepository implements DocumentRepository {
 
 	@Override
 	public Document getById(Long id) {
-		if(!this.documents.containsKey(id)){
+		if (!this.documents.containsKey(id)) {
 			throw new DocumentNotFoundException();
 		}
 		return this.documents.get(id);
@@ -53,4 +53,3 @@ public class DocumentInMemoryRepository implements DocumentRepository {
 	}
 
 }
-
