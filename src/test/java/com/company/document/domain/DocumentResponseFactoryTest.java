@@ -5,6 +5,7 @@ import static org.mockito.Mockito.mock;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.company.document.domain.factory.DocumentResponseFactory;
 import com.company.document.response.DocumentResponse;
 
 public class DocumentResponseFactoryTest {

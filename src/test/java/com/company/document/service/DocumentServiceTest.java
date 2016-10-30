@@ -10,9 +10,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.company.document.domain.Document;
-import com.company.document.domain.DocumentResponseFactory;
 import com.company.document.domain.DocumentType;
 import com.company.document.domain.Watermark;
+import com.company.document.domain.factory.DocumentResponseFactory;
 import com.company.document.exception.WatermarkNotFoundException;
 import com.company.document.persistence.DocumentRepository;
 import com.company.document.repository.DocumentInMemoryRepository;

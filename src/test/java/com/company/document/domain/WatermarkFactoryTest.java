@@ -6,6 +6,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.company.document.domain.factory.WatermarkFactory;
 import com.company.document.exception.InvalidWatermarkCreationException;
 
 public class WatermarkFactoryTest {

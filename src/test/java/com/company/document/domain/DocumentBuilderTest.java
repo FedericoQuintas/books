@@ -5,12 +5,12 @@ import static org.junit.Assert.*;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
 import static org.mockito.Mockito.mock;
 
-
 import com.company.document.domain.Document;
-import com.company.document.domain.DocumentBuilder;
 import com.company.document.domain.Watermark;
+import com.company.document.domain.factory.DocumentBuilder;
 import com.company.document.exception.InvalidDocumentCreationException;
 
 public class DocumentBuilderTest {

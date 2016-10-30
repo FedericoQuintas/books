@@ -1,7 +1,9 @@
-package com.company.document.domain;
+package com.company.document.domain.factory;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.company.document.domain.Document;
+import com.company.document.domain.Watermark;
 import com.company.document.exception.InvalidDocumentCreationException;
 
 public class DocumentBuilder {

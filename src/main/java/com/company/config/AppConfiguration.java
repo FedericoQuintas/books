@@ -1,12 +1,15 @@
 package com.company.config;
 
+import java.util.concurrent.Executors;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
-import com.company.document.domain.DocumentResponseFactory;
-import com.company.document.domain.WatermarkFactory;
-import com.company.document.domain.WatermarkResponseFactory;
+import com.company.document.domain.RealRandomProcessDuration;
+import com.company.document.domain.factory.DocumentResponseFactory;
+import com.company.document.domain.factory.WatermarkFactory;
+import com.company.document.domain.factory.WatermarkResponseFactory;
 import com.company.document.persistence.DocumentRepository;
 import com.company.document.repository.DocumentInMemoryRepository;
 import com.company.document.resource.DocumentResource;
@@ -19,6 +22,8 @@ import com.company.user.service.FindAuthorServiceImpl;
 @Configuration
 @EnableWebMvc
 public class AppConfiguration {
+
+	private static final int NUMBER_OF_THREADS = 40;
 
 	@Bean
 	public DocumentService documentService(
@@ -43,7 +48,9 @@ public class AppConfiguration {
 	public WatermarkDomainService watermarkDomainService(
 			DocumentRepository documentRepository) {
 		return new WatermarkDomainServiceImpl(new WatermarkFactory(),
-				new WatermarkResponseFactory(), documentRepository);
+				new WatermarkResponseFactory(), documentRepository,
+				Executors.newFixedThreadPool(NUMBER_OF_THREADS),
+				new RealRandomProcessDuration());
 	}
 
 }

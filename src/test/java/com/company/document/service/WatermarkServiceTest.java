@@ -1,17 +1,19 @@
 package com.company.document.service;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+
+import java.util.concurrent.Executors;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.company.document.domain.Watermark;
-import com.company.document.domain.WatermarkFactory;
-import com.company.document.domain.WatermarkResponseFactory;
+import com.company.document.domain.factory.WatermarkFactory;
+import com.company.document.domain.factory.WatermarkResponseFactory;
+import com.company.document.domain.random.DummyRandomProcessDuration;
 import com.company.document.persistence.DocumentRepository;
-
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-
 
 public class WatermarkServiceTest {
 
@@ -28,7 +30,8 @@ public class WatermarkServiceTest {
 		documentRepository = mock(DocumentRepository.class);
 		watermarkService = new WatermarkDomainServiceImpl(
 				new WatermarkFactory(), new WatermarkResponseFactory(),
-				documentRepository);
+				documentRepository, Executors.newFixedThreadPool(1),
+				new DummyRandomProcessDuration());
 	}
 
 	@Test
@@ -65,7 +68,7 @@ public class WatermarkServiceTest {
 				authorName, null).getWatermark();
 		Assert.assertNull(watermark.getTopic());
 	}
-	
+
 	@Test
 	public void whenWatermarkIsCreatedThenIsSaved() {
 		Watermark watermark = watermarkService.create(id, title, content,

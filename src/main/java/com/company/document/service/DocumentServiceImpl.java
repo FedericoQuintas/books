@@ -1,10 +1,10 @@
 package com.company.document.service;
 
 import com.company.document.domain.Document;
-import com.company.document.domain.DocumentBuilder;
-import com.company.document.domain.DocumentResponseFactory;
 import com.company.document.domain.DocumentType;
 import com.company.document.domain.Watermark;
+import com.company.document.domain.factory.DocumentBuilder;
+import com.company.document.domain.factory.DocumentResponseFactory;
 import com.company.document.persistence.DocumentRepository;
 import com.company.document.response.DocumentResponse;
 import com.company.document.response.WatermarkResponse;
@@ -41,6 +41,8 @@ public class DocumentServiceImpl implements DocumentService {
 				topic);
 
 		fillDocumentWithWatermark(document, watermarkResponse);
+		
+		documentRepository.save(document);
 
 		return documentResponseFactory.create(document,
 				watermarkResponse.getTicket());
